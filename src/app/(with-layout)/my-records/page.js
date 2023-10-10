@@ -1,7 +1,6 @@
 "use client";
 import React, { useState } from "react";
 import RecordsTable from "./RecordsTable";
-import { useGetUserWorkQuery } from "@/Redux/Features/api/WorkHistoryApi";
 import ViewAttendanceDetails from "@/app/(dashboard)/admin-dashboard/all-attendance/ViewAttendanceDetails";
 
 const MyRecords = () => {

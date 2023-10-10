@@ -1,15 +1,15 @@
 "use client";
 import { useFetchJWTMutation } from "@/Redux/Features/userSlice/userApi";
 import { setLoading, setUser } from "@/Redux/Features/userSlice/userSlice";
-import auth from "@/Utils/firebase.init";
 import { onAuthStateChanged } from "firebase/auth";
-import { redirect } from "next/dist/server/api-utils";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { use, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Cookies from "js-cookie";
+import app from "@/Utils/firebase.init";
+const auth = getAuth(app); // Initialize Auth
 const PrivateRoute = ({ children }) => {
+
   const { user, isLoading } = useSelector((state) => state?.userSlice);
   const [sendLoggedUser, { data, isLoading: isJwtLoading, isError, error }] =
     useFetchJWTMutation();

@@ -1,4 +1,4 @@
-import auth from "@/Utils/firebase.init";
+import app from "@/Utils/firebase.init";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
   createUserWithEmailAndPassword,
@@ -9,6 +9,7 @@ import {
 export const createUser = createAsyncThunk(
   "users/createUserSignUp",
   async ({ email, password, image, fullName }) => {
+    const auth = getAuth(app); // Initialize Auth
     const userRes = await createUserWithEmailAndPassword(auth, email, password);
     if (userRes?.user) {
       const updateProfileRes = await updateProfile(auth.currentUser, {
@@ -16,8 +17,11 @@ export const createUser = createAsyncThunk(
         displayName: fullName,
       });
 
-
-      const newUser = {email:userRes.user.email,displayName:userRes.user.displayName,photoURL:userRes.user.photoURL}
+      const newUser = {
+        email: userRes.user.email,
+        displayName: userRes.user.displayName,
+        photoURL: userRes.user.photoURL,
+      };
 
       return newUser;
     }
@@ -27,9 +31,14 @@ export const createUser = createAsyncThunk(
 export const loginUser = createAsyncThunk(
   "users/userSignUp",
   async ({ email, password }) => {
+    const auth = getAuth(app); // Initialize Auth
     const userRes = await signInWithEmailAndPassword(auth, email, password);
     if (userRes.user) {
-      const newUser = {email:userRes.user.email,displayName:userRes.user.displayName,photoURL:userRes.user.photoURL}
+      const newUser = {
+        email: userRes.user.email,
+        displayName: userRes.user.displayName,
+        photoURL: userRes.user.photoURL,
+      };
 
       return newUser;
     }

@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import EmployeeNameTable from "./EmployeeNameTable";
 import EmployeeDataTable from "./EmployeeDataTable";
-import Button from "@mui/material/Button";
 import ViewAttendanceDetails from "./ViewAttendanceDetails";
 
 const AllAttendance = () => {

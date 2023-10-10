@@ -3,18 +3,15 @@ import Button from "@/components/Button/Button";
 import Day from "@/components/Day/Day";
 import useRealTime from "@/Hooks/useRealTime";
 import StartEndTime from "@/components/StartEndTime/StartEndTime";
-import React, { memo, useEffect, useState } from "react";
+import React, {useEffect} from "react";
 import FormatTimeWorked from "@/components/FormateTimeWorked/FormatTimeWorked";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  setCurrentTime,
   setStartTimeFromLocal,
-  setWorkTime,
   setStartTime,
   setFinishTimeFromLocal,
 } from "@/Redux/Features/Times/timeSlice";
 import { fetchTracker } from "@/Redux/Features/trackerSlice/trackerSlice";
-import axios from "axios";
 import moment from "moment";
 import {
   useAddStartTimeMutation,
@@ -25,7 +22,6 @@ import useWorkTime from "@/Hooks/useWorkTime";
 
 const Home = () => {
   const { currentTime } = useRealTime();
-
   // time slice data________________________
   const {
     isBtnStartDisable,
@@ -34,16 +30,14 @@ const Home = () => {
     workTime,
     startInsertId,
   } = useSelector((store) => store.timesSlice);
-
   // user slice data_____________________________________
   const { user } = useSelector((state) => state?.userSlice);
   const {
     isLoading: isTrackerLoading,
     isError: isTrackerError,
     error: TrackerError,
-    address,
   } = useSelector((store) => store.trackerSlice);
-  const [addStartTime, { data, isError, isLoading: isStartLoading }] =
+  const [addStartTime, { isLoading: isStartLoading }] =
     useAddStartTimeMutation();
 
   const [updateFinishedData, { isLoading: isFinishLoading }] =
@@ -51,7 +45,7 @@ const Home = () => {
 
   const dispatch = useDispatch();
 
-  const { seconds, hours, minutes, remainingSeconds } =
+  const { hours, minutes, remainingSeconds } =
     FormatTimeWorked(workTime);
 
   //work time
