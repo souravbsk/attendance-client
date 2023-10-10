@@ -9,7 +9,7 @@ const AddEmployeeApi = baseApi.injectEndpoints({
           method: "GET",
         };
       },
-      providesTags:["Attendance"],
+      providesTags: ["Employee"],
     }),
     addNewEmployee: builder.mutation({
       query: (employeeData) => {
@@ -19,10 +19,33 @@ const AddEmployeeApi = baseApi.injectEndpoints({
           body: employeeData,
         };
       },
-      invalidatesTags: ["Attendance"],
+      invalidatesTags: ["Employee"],
+    }),
+    updateEmployee: builder.mutation({
+      query: ({ updateEmployeeData, employeeId }) => {
+        return {
+          url: `/api/admin/employee/${employeeId}`,
+          method: "PUT",
+          body: updateEmployeeData, // Pass the data object directly
+        };
+      },
+      invalidatesTags: ["Employee"],
+    }),
+    deleteEmployee: builder.mutation({
+      query: (employeeId) => {
+        return {
+          url: `/api/admin/employee/${employeeId}`,
+          method: "DELETE",
+        };
+      },
+      invalidatesTags: ["Employee"],
     }),
   }),
 });
 
-export const { useAddNewEmployeeMutation, useGetNewEmployeeQuery } =
-  AddEmployeeApi;
+export const {
+  useAddNewEmployeeMutation,
+  useGetNewEmployeeQuery,
+  useUpdateEmployeeMutation,
+  useDeleteEmployeeMutation
+} = AddEmployeeApi;

@@ -17,7 +17,7 @@ const useWorkTime = () => {
       //statr work
       dispatch(setWorkTime(workTimeCalculate));
     }
-  }, [currentTime, startTime]);
+  }, [currentTime, startTime,dispatch]);
 };
 
 export default useWorkTime;

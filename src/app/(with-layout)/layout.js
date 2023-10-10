@@ -5,13 +5,13 @@ import React from "react";
 
 const WithLayout = ({ children }) => {
   return (
-    <PrivateRoute>
-      <div className="bg-[#00548E] min-h-screen flex flex-col justify-between">
+    <div className="bg-[#00548E] min-h-screen flex flex-col justify-between">
+      <PrivateRoute>
         <Header></Header>
         {children}
         <Footer></Footer>
-      </div>
-    </PrivateRoute>
+      </PrivateRoute>
+    </div>
   );
 };
 

@@ -28,4 +28,4 @@ const MyRecords = () => {
   );
 };
 
-export default MyRecords;
+export default React.memo(MyRecords);

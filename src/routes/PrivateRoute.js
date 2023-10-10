@@ -1,15 +1,14 @@
 "use client";
+import React, { useEffect } from "react";
 import { useFetchJWTMutation } from "@/Redux/Features/userSlice/userApi";
 import { setLoading, setUser } from "@/Redux/Features/userSlice/userSlice";
-import { onAuthStateChanged } from "firebase/auth";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useRouter } from "next/navigation";
-import React, { use, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Cookies from "js-cookie";
 import app from "@/Utils/firebase.init";
-const auth = getAuth(app); // Initialize Auth
 const PrivateRoute = ({ children }) => {
-
+  const auth = getAuth(app); // Initialize Auth
   const { user, isLoading } = useSelector((state) => state?.userSlice);
   const [sendLoggedUser, { data, isLoading: isJwtLoading, isError, error }] =
     useFetchJWTMutation();
@@ -20,9 +19,9 @@ const PrivateRoute = ({ children }) => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
         const newUser = {
-          email: currentUser.email,
-          displayName: currentUser.displayName,
-          photoURL: currentUser.photoURL,
+          email: currentUser?.email,
+          displayName: currentUser?.displayName,
+          photoURL: currentUser?.photoURL,
         };
 
         dispatch(setUser(newUser));
@@ -41,7 +40,7 @@ const PrivateRoute = ({ children }) => {
       }
     });
     return () => unsubscribe();
-  }, []);
+  }, [auth, dispatch, sendLoggedUser]);
 
   if (isLoading) {
     //console.log("object");

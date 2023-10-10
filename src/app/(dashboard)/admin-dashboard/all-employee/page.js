@@ -18,6 +18,7 @@ const AllEmployee = () => {
     }
   };
   const handleEmployeeDetails = (details) => {
+    setViewEmployeeDetails({});
     if (details) {
       setViewEmployeeDetails(details);
       setUpdateModalOpen(true);
@@ -39,9 +40,7 @@ const AllEmployee = () => {
           setUpdateModalOpen={setUpdateModalOpen}
           isUpdateModalOpen={isUpdateModalOpen}
           employee={ViewEmployeeDetails}
-        >
-          {" "}
-        </UpdateEmployeeDetails>
+        ></UpdateEmployeeDetails>
         <ViewEmployee
           isViewModalOpen={isViewModalOpen}
           setViewModalIsOpen={setViewModalIsOpen}

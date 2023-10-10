@@ -2,16 +2,54 @@
 import MaterialReactTable from "material-react-table";
 import React, { useState } from "react";
 import { FaEye, FaRegEdit, FaTrash } from "react-icons/fa";
-import ViewEmployee from "./ViewEmployee";
-import { useGetNewEmployeeQuery } from "@/Redux/Features/api/AdminApi/AddEmployeeApi";
+import {
+  useDeleteEmployeeMutation,
+  useGetNewEmployeeQuery,
+} from "@/Redux/Features/api/AdminApi/AddEmployeeApi";
 import Image from "next/image";
 import { GrUserWorker } from "react-icons/gr";
-import { RiAdminFill } from "react-icons/ri";
+import { RiAdminFill, RiFileExcel2Fill } from "react-icons/ri";
 import Skeleton from "@mui/material/Skeleton";
+import { CSVLink } from "react-csv";
+import Swal from "sweetalert2";
 const EmployeeListTable = ({ handleViewEmployee, handleEmployeeDetails }) => {
   const { data, isLoading, isError, error } = useGetNewEmployeeQuery();
+  const [
+    deleteEmployee,
+    { isLoading: deleteLoading, isError: isDeleteError, error: deleteError },
+  ] = useDeleteEmployeeMutation();
 
   console.log(data);
+
+  const handleDeleteEmployee = (employee) => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You wan't be delete this Employee",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+
+        deleteEmployee(employee?._id)
+        .then(res => {
+          console.log(res);
+          if(res?.data?.deletedCount > 0){
+            Swal.fire(
+              'Deleted!',
+              'Employee has been deleted.',
+              'success'
+            )
+          }
+        })
+
+      
+      }
+    })
+    
+  };
 
   const columns = [
     {
@@ -91,7 +129,10 @@ const EmployeeListTable = ({ handleViewEmployee, handleEmployeeDetails }) => {
           >
             <FaRegEdit></FaRegEdit>
           </button>
-          <button className="text-lg px-3 py-3 bg-[#0D64A5] text-white rounded-lg">
+          <button
+            onClick={() => handleDeleteEmployee(row?.original)}
+            className="text-lg px-3 py-3 bg-[#0D64A5] text-white rounded-lg"
+          >
             <FaTrash></FaTrash>
           </button>
         </div>
@@ -99,12 +140,37 @@ const EmployeeListTable = ({ handleViewEmployee, handleEmployeeDetails }) => {
     },
   ];
 
+  const exportData = data?.map((person, i) => {
+    const accountStatus = person?.isAccount ? "Registered" : "Pending";
+    const employee = {
+      Id: i + 1,
+      Name: person?.name,
+      Designation: person?.designation,
+      EmployeeID: person?.employeeId,
+      AccountStatus: accountStatus,
+      Email: person?.email,
+      Phone: person?.phone,
+      role: person?.role,
+    };
+    return employee;
+  });
+
   return (
     <div className="rounded-2xl overflow-hidden">
       <MaterialReactTable
         rowNumberMode="original"
         data={data ? data : []}
         columns={columns}
+        renderTopToolbarCustomActions={() =>
+          data &&
+          data?.length > 0 && (
+            <CSVLink data={exportData}>
+              <button className="rounded-lg text  px-4 py-4 font-semibold mr-2 text-white bg-[#0D64A5]">
+                <RiFileExcel2Fill></RiFileExcel2Fill>
+              </button>
+            </CSVLink>
+          )
+        }
         muiTopToolbarProps={{
           sx: {
             backgroundColor: "#ADD8E6",
@@ -123,7 +189,7 @@ const EmployeeListTable = ({ handleViewEmployee, handleEmployeeDetails }) => {
         }}
         state={{
           showAlertBanner: isError,
-          showProgressBars: isLoading,
+          showProgressBars: isLoading || deleteLoading,
         }}
       ></MaterialReactTable>
     </div>

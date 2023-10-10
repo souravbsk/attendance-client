@@ -9,7 +9,6 @@ const AllAttendance = () => {
   const [employeeDetails, setEmployeeDetails] = useState({});
   const [isAttendanceModal, setAttendanceModal] = useState(false);
   const handleViewAttendance = (data) => {
-    //console.log(data);
     if(data){
       setEmployeeDetails(data);
       setAttendanceModal(true)
