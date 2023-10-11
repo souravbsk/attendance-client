@@ -7,7 +7,7 @@ const MyRecords = () => {
       <h1 className="text-center mt-12 text-3xl font-bold text-white mb-12">
         My Working History
       </h1>
-      <RecordsTable handleViewAttendance={handleViewAttendance}></RecordsTable>
+      <RecordsTable></RecordsTable>
     </div>
   );
 };

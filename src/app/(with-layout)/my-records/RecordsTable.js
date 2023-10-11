@@ -52,8 +52,8 @@ const RecordsTable = () => {
       header: "Start location",
       accessorFn: (row) => (
         <div className="w-full">
-          {row?.trackingDetails?.addressDetails?.city}, 
-          {row?.trackingDetails?.addressDetails?.county}, 
+          {row?.trackingDetails?.addressDetails?.city},
+          {row?.trackingDetails?.addressDetails?.county},
           {row?.trackingDetails?.addressDetails?.postcode}
         </div>
       ),
