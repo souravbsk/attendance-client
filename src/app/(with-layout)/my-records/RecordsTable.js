@@ -3,13 +3,12 @@ import useFormatTimeWorked from "@/Hooks/useFormatTimeWorked";
 import { useGetUserWorkQuery } from "@/Redux/Features/api/WorkHistoryApi";
 import MaterialReactTable from "material-react-table";
 import moment from "moment";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { CSVLink } from "react-csv";
-import { FaEye } from "react-icons/fa";
 import { RiFileExcel2Fill } from "react-icons/ri";
 import { useSelector } from "react-redux";
 
-const RecordsTable = ({ handleViewAttendance }) => {
+const RecordsTable = () => {
   const { user } = useSelector((state) => state?.userSlice);
 
   const { data, isLoading, isError, error } = useGetUserWorkQuery(user.email);

@@ -14,7 +14,7 @@ const SignUp = () => {
   const [setSignUp, { isLoading, data, isError, error }] =
     useSignUpUserMutation();
 
-  const handleCreateUser = async (e) => {
+  const handleCreateUser = (e) => {
     e.preventDefault();
     const form = e.target;
     const email = form.email.value;
@@ -37,37 +37,39 @@ const SignUp = () => {
       return;
     }
 
-    const response = await dispatch(
-      createUser({ email, password, image, fullName })
-    );
+    dispatch(createUser({ email, password, image, fullName })).then(
+      
+      (response) => {
+        console.log(response);
+        if (response.payload) {
+          const newUser = {
+            email: response.payload.email,
+            image: response.payload.photoURL,
+          };
+          setSignUp(newUser).then((res) => {
+            //console.log(res);
+            if (res.data.isUserExist == false) {
+              Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "You have no permission to register this app",
+                footer: '<Link href="#">Contact Admin</Link>',
+              });
+            }
 
-    if (response.payload) {
-      const newUser = {
-        email: response.payload.email,
-        image: response.payload.photoURL,
-      };
-      setSignUp(newUser).then((res) => {
-        //console.log(res);
-        if(res.data.isUserExist == false){
-          Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: 'You have no permission to register this app',
-            footer: '<Link href="#">Contact Admin</Link>'
-          })
+            if (res.data.modifiedCount > 0) {
+              Swal.fire({
+                position: "center",
+                icon: "success",
+                title: "Success fully register",
+                showConfirmButton: false,
+                timer: 1500,
+              });
+            }
+          });
         }
-
-         if(res.data.modifiedCount > 0 ){
-          Swal.fire({
-            position: 'center',
-            icon: 'success',
-            title: 'Success fully register',
-            showConfirmButton: false,
-            timer: 1500
-          })
-         }
-      });
-    }
+      }
+    );
   };
 
   //console.log(data, isLoading);

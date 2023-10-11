@@ -2,6 +2,7 @@ import app from "@/Utils/firebase.init";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
   createUserWithEmailAndPassword,
+  getAuth,
   signInWithEmailAndPassword,
   updateProfile,
 } from "firebase/auth";
@@ -9,8 +10,10 @@ import {
 export const createUser = createAsyncThunk(
   "users/createUserSignUp",
   async ({ email, password, image, fullName }) => {
-    const auth = getAuth(app); // Initialize Auth
+    console.log(email,password,image,fullName);
+    const auth =  getAuth(app); // Initialize Auth
     const userRes = await createUserWithEmailAndPassword(auth, email, password);
+    console.log(userRes);
     if (userRes?.user) {
       const updateProfileRes = await updateProfile(auth.currentUser, {
         photoURL: image,
@@ -22,6 +25,7 @@ export const createUser = createAsyncThunk(
         displayName: userRes.user.displayName,
         photoURL: userRes.user.photoURL,
       };
+      console.log(newUser);
 
       return newUser;
     }

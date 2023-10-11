@@ -17,6 +17,7 @@ const SignIn = () => {
     const email = form.email.value;
     const password = form.password.value;
     dispatch(loginUser({ email, password })).then((response) => {
+      console.log(response);
       if (response.payload) {
         router.push("/");
       }
