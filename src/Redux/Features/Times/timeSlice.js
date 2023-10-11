@@ -1,4 +1,8 @@
-import { getTimeFromLocal, removeTimeFromLocal } from "@/Utils/timeHandler";
+import {
+  getTimeFromLocal,
+  removeTimeFromLocal,
+  setTimeFormLocal,
+} from "@/Utils/timeHandler";
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
@@ -18,7 +22,7 @@ const timeSlice = createSlice({
       state.isBtnStartDisable = payload?.startBtn;
       state.isBtnEndDisable = payload?.endBtn;
       state.startInsertId = payload?.startInsertId;
-      setTimeFormLocal(payload)
+      setTimeFormLocal(payload);
     },
     setCurrentTime: (state, { payload }) => {
       state.currentTime = payload.time;
@@ -28,7 +32,6 @@ const timeSlice = createSlice({
     },
     setStartTimeFromLocal: (state) => {
       const parseStartValue = getTimeFromLocal();
-
       if (parseStartValue) {
         state.startTime = parseStartValue?.time;
         state.isBtnStartDisable = parseStartValue?.startBtn;
