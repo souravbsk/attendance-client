@@ -1,5 +1,8 @@
 "use client";
-import { useSignUpUserMutation } from "@/Redux/Features/userSlice/userApi";
+import {
+  useCheckUserExistMutation,
+  useSignUpUserMutation,
+} from "@/Redux/Features/userSlice/userApi";
 import { createUser } from "@/Redux/Features/userSlice/userSlice";
 import SignInWithGoogle from "@/components/SignInWithGoogle/SignInWithGoogle";
 import Link from "next/link";
@@ -11,6 +14,7 @@ import Swal from "sweetalert2";
 const SignUp = () => {
   const dispatch = useDispatch();
 
+  const [checkUserExist] = useCheckUserExistMutation();
   const [setSignUp, { isLoading, data, isError, error }] =
     useSignUpUserMutation();
 
@@ -37,39 +41,63 @@ const SignUp = () => {
       return;
     }
 
-    dispatch(createUser({ email, password, image, fullName })).then(
-      
-      (response) => {
-        console.log(response);
-        if (response.payload) {
-          const newUser = {
-            email: response.payload.email,
-            image: response.payload.photoURL,
-          };
-          setSignUp(newUser).then((res) => {
-            //console.log(res);
-            if (res.data.isUserExist == false) {
-              Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                text: "You have no permission to register this app",
-                footer: '<Link href="#">Contact Admin</Link>',
-              });
-            }
-
-            if (res.data.modifiedCount > 0) {
-              Swal.fire({
-                position: "center",
-                icon: "success",
-                title: "Success fully register",
-                showConfirmButton: false,
-                timer: 1500,
-              });
-            }
-          });
-        }
+    checkUserExist(email).then((res) => {
+      console.log(res);
+      if (!res?.data?.isUserExist) {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "You have no permission to register this app",
+          footer: '<Link href="#">Contact Admin</Link>',
+        });
       }
-    );
+      if (res?.data?.isUserExist) {
+        dispatch(createUser({ email, password, image, fullName }))
+          .then((response) => {
+            console.log(response);
+            if(response.error){
+              toast.error(`${response?.error?.message}`, {
+                position: "top-center",
+                autoClose: 1500,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+                });
+            }
+            if (response.payload) {
+              const newUser = {
+                email: response.payload.email,
+                image: response.payload.photoURL,
+              };
+              setSignUp(newUser).then((res) => {
+                //console.log(res);
+                if (res.data.isUserExist == false) {
+                  Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "You have no permission to register this app",
+                    footer: '<Link href="#">Contact Admin</Link>',
+                  });
+                }
+
+                if (res.data.modifiedCount > 0) {
+                  Swal.fire({
+                    position: "center",
+                    icon: "success",
+                    title: "Success fully register",
+                    showConfirmButton: false,
+                    timer: 1500,
+                  });
+                }
+              });
+            }
+          })
+        
+      }
+    });
   };
 
   //console.log(data, isLoading);

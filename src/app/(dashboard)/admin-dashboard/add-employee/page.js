@@ -34,22 +34,14 @@ const AddEmployee = () => {
     const firstName = form.firstName.value;
     const lastName = form.lastName.value;
     const designation = form.designation.value;
-    const employeeidValue = form.employeeid.value;
     const email = form.email.value;
     const phone = form.phone.value;
     //console.log(employeeidValue);
-    if (isNaN(employeeidValue)) {
-      alert("employee id must be number");
-      return;
-    }
-
-    const employeeId = "#B&V" + employeeidValue;
     const name = firstName + " " + lastName;
 
     const newEmployee = {
       name,
       designation,
-      employeeId,
       email,
       phone,
     };
@@ -133,7 +125,7 @@ const AddEmployee = () => {
               className="input input-bordered"
             />
           </div>
-          <div className="form-control w-full">
+          {/* <div className="form-control w-full">
             <label className="label">
               <span className="label-text text-white">Employee ID</span>
             </label>
@@ -143,7 +135,7 @@ const AddEmployee = () => {
               placeholder="Employee_Id"
               className="input input-bordered"
             />
-          </div>
+          </div> */}
         </div>
         <div className="flex items-center flex-col md:flex-row gap-6 mb-6">
           <div className="form-control w-full">

@@ -30,7 +30,6 @@ const UpdateEmployeeDetails = ({
     const firstName = form.firstName.value;
     const lastName = form.lastName.value;
     const designation = form.designation.value;
-    const employeeId = form.employeeid.value;
     const email = form.email.value;
     const phone = form.phone.value;
     const name = firstName + " " + lastName;
@@ -38,7 +37,6 @@ const UpdateEmployeeDetails = ({
     const updateEmployeeData = {
       name,
       designation,
-      employeeId,
       email,
       phone,
     };

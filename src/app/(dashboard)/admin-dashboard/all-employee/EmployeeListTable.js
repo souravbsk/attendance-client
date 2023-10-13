@@ -23,32 +23,23 @@ const EmployeeListTable = ({ handleViewEmployee, handleEmployeeDetails }) => {
 
   const handleDeleteEmployee = (employee) => {
     Swal.fire({
-      title: 'Are you sure?',
+      title: "Are you sure?",
       text: "You wan't be delete this Employee",
-      icon: 'warning',
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!'
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-
-        deleteEmployee(employee?._id)
-        .then(res => {
+        deleteEmployee(employee?._id).then((res) => {
           console.log(res);
-          if(res?.data?.deletedCount > 0){
-            Swal.fire(
-              'Deleted!',
-              'Employee has been deleted.',
-              'success'
-            )
+          if (res?.data?.deletedCount > 0) {
+            Swal.fire("Deleted!", "Employee has been deleted.", "success");
           }
-        })
-
-      
+        });
       }
-    })
-    
+    });
   };
 
   const columns = [

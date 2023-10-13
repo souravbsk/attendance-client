@@ -6,11 +6,11 @@ import userImage from "@/assets/sourav.jpg";
 import { FaHistory } from "react-icons/fa";
 import { FiLogOut } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
-import { signOut } from "firebase/auth";
+import { getAuth, signOut } from "firebase/auth";
 import { setLogOut } from "@/Redux/Features/userSlice/userSlice";
-import auth from "@/Utils/firebase.init";
 import { useRouter } from "next/navigation";
-
+import app from "@/Utils/firebase.init";
+const auth = getAuth(app)
 const Header = () => {
   const { user } = useSelector((state) => state.userSlice);
   const dispatch = useDispatch();

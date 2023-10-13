@@ -40,6 +40,15 @@ const AddEmployeeApi = baseApi.injectEndpoints({
       },
       invalidatesTags: ["Employee"],
     }),
+    getEmployeeNames: builder.query({
+      query:() => {
+        return {
+          url:"/api/admin/employeeName",
+          method:"GET"
+        }
+      },
+      providesTags: ["Employee"],
+    })
   }),
 });
 
@@ -47,5 +56,6 @@ export const {
   useAddNewEmployeeMutation,
   useGetNewEmployeeQuery,
   useUpdateEmployeeMutation,
-  useDeleteEmployeeMutation
+  useDeleteEmployeeMutation,
+  useGetEmployeeNamesQuery
 } = AddEmployeeApi;

@@ -9,6 +9,12 @@ const userApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["Users"],
     }),
+    checkUserExist: builder.mutation({
+      query:(email) => ({
+        url: `/api/usersexist/${email}`,
+        method: "POST",
+      })
+    }),
     signUpUser: builder.mutation({
       query: (newUser) => ({
         url: "/api/users",
@@ -20,4 +26,4 @@ const userApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useFetchJWTMutation, useSignUpUserMutation } = userApi;
+export const { useFetchJWTMutation, useSignUpUserMutation,useCheckUserExistMutation } = userApi;
