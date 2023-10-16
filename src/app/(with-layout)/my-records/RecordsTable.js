@@ -61,7 +61,7 @@ const RecordsTable = () => {
   ];
 
   const exportData = data?.map((row) => {
-    const workTime = TotalWorkColumn(row);
+    const workTime = TotalWorkColumn({ row });
     const employeeData = {
       Date: moment(row.date).format("D-M-YYYY"),
       Day: row.day,

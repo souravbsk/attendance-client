@@ -19,6 +19,11 @@ const EmployeeAttendanceTable = () => {
   };
   const columns = [
     {
+      header:"#",
+      size: 30,
+      accessorFn: (row,i) => i+1,
+    },
+    {
       header: "Date",
       size: 50,
       accessorFn: (row) => moment(row.date).format("D-M-YYYY"),
@@ -67,9 +72,10 @@ const EmployeeAttendanceTable = () => {
     },
   ];
 
-  const exportData = data?.map((row) => {
-    const workTime = TotalWorkColumn(row);
+  const exportData = data?.map((row,i) => {
+    const workTime = TotalWorkColumn({row});
     const employeeData = {
+      Id: i+1,
       Date: moment(row.date).format("D-M-YYYY"),
       Day: row.day,
       StartTime: row?.startTime,
