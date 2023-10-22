@@ -1,27 +1,43 @@
+"use client";
 import useFormatTimeWorked from "@/Hooks/useFormatTimeWorked";
 import { useGetEmployeeAttendanceQuery } from "@/Redux/Features/api/AdminApi/EmployeeAttendanceApi";
 import MaterialReactTable from "material-react-table";
 import moment from "moment";
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { CSVLink } from "react-csv";
+import { FaEye } from "react-icons/fa";
 import { RiFileExcel2Fill } from "react-icons/ri";
 import { useSelector } from "react-redux";
 
-const EmployeeAttendanceTable = () => {
-  const { attendanceEmail } = useSelector((state) => state?.attendanceSlice);
-  const { data, isLoading, isError } =
-    useGetEmployeeAttendanceQuery(attendanceEmail);
+const EmployeeAttendanceTable = ({ handleViewEmployeeAttendance }) => {
+  const { attendanceEmail, endDate, startDate } = useSelector(
+    (state) => state?.attendanceSlice
+  );
+  console.log(attendanceEmail);
+  const { data, isLoading, isError, error } = useGetEmployeeAttendanceQuery({
+    email: attendanceEmail,
+    fromDate: startDate,
+    toDate: endDate,
+  });
+
+  const [allData, setAllData] = useState([]);
+
+  useEffect(() => {
+    if (!isLoading && !isError && data) {
+      setAllData(data);
+    }
+  }, [data, isLoading, isError]);
 
   const TotalWorkColumn = ({ row }) => {
     const formattedTime = useFormatTimeWorked(row?.totalWork);
 
     return formattedTime;
   };
-  const columns = [
+  const columns = useMemo(() => [
     {
-      header:"#",
+      header: "#",
       size: 30,
-      accessorFn: (row,i) => i+1,
+      accessorFn: (row, i) => i + 1,
     },
     {
       header: "Date",
@@ -70,12 +86,23 @@ const EmployeeAttendanceTable = () => {
         </div>
       ),
     },
-  ];
+    {
+      header: "Details",
+      accessorFn: (row) => (
+        <button
+          onClick={() => handleViewEmployeeAttendance(row)}
+          className="text-lg px-3 py-3 bg-[#0D64A5] text-white rounded-lg"
+        >
+          <FaEye></FaEye>
+        </button>
+      ),
+    },
+  ]);
 
-  const exportData = data?.map((row,i) => {
-    const workTime = TotalWorkColumn({row});
+  const exportData = allData?.map((row, i) => {
+    const workTime = TotalWorkColumn({ row });
     const employeeData = {
-      Id: i+1,
+      Id: i + 1,
       Date: moment(row.date).format("D-M-YYYY"),
       Day: row.day,
       StartTime: row?.startTime,
@@ -83,7 +110,19 @@ const EmployeeAttendanceTable = () => {
       TotalWork: workTime,
       email: row?.email,
       StartIp: row?.trackingDetails?.providerDetails?.query,
-      StartLocation: row?.trackingDetails?.addressDetails?.county,
+      StartLocation:
+        row?.trackingDetails?.addressDetails?.city +
+        "," +
+        row?.trackingDetails?.addressDetails?.county +
+        "," +
+        row?.trackingDetails?.addressDetails?.state_district +
+        "," +
+        row?.trackingDetails?.addressDetails?.state +
+        "," +
+        row?.trackingDetails?.addressDetails?.postcode +
+        "," +
+        row?.trackingDetails?.addressDetails?.country +
+        ",",
     };
     return employeeData;
   });
@@ -93,18 +132,22 @@ const EmployeeAttendanceTable = () => {
       <div>
         <MaterialReactTable
           rowNumberMode="original"
-          data={data ? data : []}
+          data={allData ? allData : []}
           columns={columns}
-          renderTopToolbarCustomActions={() =>
-            data &&
-            data.length > 0 && (
-              <CSVLink data={exportData}>
-                <button className="rounded-lg text  px-4 py-4 font-semibold mr-2 text-white bg-[#0D64A5]">
-                  <RiFileExcel2Fill></RiFileExcel2Fill>
-                </button>
-              </CSVLink>
-            )
-          }
+          renderTopToolbarCustomActions={() => (
+            <>
+              {allData && allData.length > 0 && (
+                <CSVLink data={exportData}>
+                  <button className="rounded-lg text  px-4 py-4 font-semibold mr-2 text-white bg-[#0D64A5]">
+                    <RiFileExcel2Fill></RiFileExcel2Fill>
+                  </button>
+                </CSVLink>
+              )}
+              <h2 className="text-center text-[#0D64A5] md:text-xl  font-semibold">
+                Attendance History
+              </h2>
+            </>
+          )}
           muiTopToolbarProps={{
             sx: {
               backgroundColor: "#ADD8E6",
@@ -121,6 +164,14 @@ const EmployeeAttendanceTable = () => {
               backgroundColor: "#ADD8E6",
             },
           }}
+          muiToolbarAlertBannerProps={
+            isError
+              ? {
+                  color: "error",
+                  children: "data could not fetch",
+                }
+              : undefined
+          }
           state={{
             showAlertBanner: isError,
             showProgressBars: isLoading,

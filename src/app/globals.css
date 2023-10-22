@@ -9,7 +9,7 @@
   font-family: 'Barlow', sans-serif;
 }
 
-.container{
+.container {
   @apply max-w-screen-xl mx-auto px-0 md:px-2
 }
 
@@ -36,3 +36,7 @@
   margin: 0 0.2em;
   color: #333;
 } */
+
+.react-datepicker-popper {
+  z-index: 700 !important;
+}

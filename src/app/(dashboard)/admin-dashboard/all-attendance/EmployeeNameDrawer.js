@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import Box from "@mui/material/Box";
 import { FaEye } from "react-icons/fa";
 import MaterialReactTable from "material-react-table";
@@ -13,7 +13,7 @@ const EmployeeNameDrawer = ({ setState, state, data, isLoading, isError }) => {
     setState(false);
   };
 
-  const columns = [
+  const columns = useMemo(() => [
     {
       header: "Employee ID",
       accessorFn: (row) => row.employeeId,
@@ -39,7 +39,7 @@ const EmployeeNameDrawer = ({ setState, state, data, isLoading, isError }) => {
         </div>
       ),
     },
-  ];
+  ]);
 
   return (
     <Box

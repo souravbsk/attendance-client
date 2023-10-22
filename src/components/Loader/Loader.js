@@ -17,7 +17,7 @@ const Loader = ({ isOpen }) => {
     <>
       {isOpen && (
         <>
-          <div className="fixed top-0 left-0 w-full h-full bg-black opacity-60 z-50"></div>
+          <div className="fixed  top-0 left-0 w-full h-full bg-black opacity-60 z-[5000]"></div>
 
           <div
             aria-labelledby="modal-modal-title"

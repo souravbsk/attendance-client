@@ -49,7 +49,7 @@ const ViewEmployee = ({ setViewModalIsOpen, isViewModalOpen, employee }) => {
                 <span className="text-[#00548E]">
                   <HiMail size={20}></HiMail>
                 </span>{" "}
-                <a href={`tel:${employee?.email}`}>{employee?.email}</a>
+                <a href={`mailto:${employee?.email}`}>{employee?.email}</a>
               </p>
             ) : (
               <Skeleton />
@@ -60,7 +60,7 @@ const ViewEmployee = ({ setViewModalIsOpen, isViewModalOpen, employee }) => {
                 <span className="text-[#00548E]">
                   <FaPhoneVolume size={20}></FaPhoneVolume>
                 </span>{" "}
-                <a href={`mailto:${employee?.phone}`}>{employee?.phone}</a>
+                <a href={`tel:${employee?.phone}`}>{employee?.phone}</a>
               </p>
             ) : (
               <Skeleton />

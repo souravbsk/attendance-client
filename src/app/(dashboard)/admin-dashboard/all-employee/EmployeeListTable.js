@@ -1,6 +1,6 @@
 "use client";
 import MaterialReactTable from "material-react-table";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { FaEye, FaRegEdit, FaTrash } from "react-icons/fa";
 import {
   useDeleteEmployeeMutation,
@@ -18,8 +18,6 @@ const EmployeeListTable = ({ handleViewEmployee, handleEmployeeDetails }) => {
     deleteEmployee,
     { isLoading: deleteLoading, isError: isDeleteError, error: deleteError },
   ] = useDeleteEmployeeMutation();
-
-  console.log(data);
 
   const handleDeleteEmployee = (employee) => {
     Swal.fire({
@@ -42,7 +40,7 @@ const EmployeeListTable = ({ handleViewEmployee, handleEmployeeDetails }) => {
     });
   };
 
-  const columns = [
+  const columns = useMemo(() => [
     {
       header: "#",
       Cell: ({ row }) => row.index + 1,
@@ -61,7 +59,7 @@ const EmployeeListTable = ({ handleViewEmployee, handleEmployeeDetails }) => {
       accessorFn: (row) =>
         row?.image ? (
           <div className="avatar">
-            <div className="w-12 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+            <div className="w-12 rounded-full ring-[#085992] ring  ring-offset-base-100 ring-offset-2">
               <Image alt="" src={row?.image} width={48} height={48} />
             </div>
           </div>
@@ -70,7 +68,7 @@ const EmployeeListTable = ({ handleViewEmployee, handleEmployeeDetails }) => {
         ),
     },
     {
-      header: "name",
+      header: "Name",
       accessorKey: "name",
       size: 150,
     },
@@ -129,7 +127,7 @@ const EmployeeListTable = ({ handleViewEmployee, handleEmployeeDetails }) => {
         </div>
       ),
     },
-  ];
+  ]);
 
   const exportData = data?.map((person, i) => {
     const accountStatus = person?.isAccount ? "Registered" : "Pending";

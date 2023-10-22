@@ -2,6 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   attendanceEmail: "",
+  startDate: "",
+  endDate: "",
 };
 const AttendanceSlice = createSlice({
   name: "times",
@@ -10,9 +12,17 @@ const AttendanceSlice = createSlice({
     setAttendanceEmail: (state, { payload }) => {
       state.attendanceEmail = payload;
     },
+    setStartDate: (state, { payload }) => {
+      console.log(payload);
+      state.startDate = payload;
+    },
+    setEndDate: (state, { payload }) => {
+      state.endDate = payload;
+    },
   },
 });
 
-export const { setAttendanceEmail } = AttendanceSlice.actions;
+export const { setAttendanceEmail, setStartDate, setEndDate } =
+  AttendanceSlice.actions;
 
 export default AttendanceSlice.reducer;
