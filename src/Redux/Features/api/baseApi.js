@@ -4,7 +4,7 @@ import Cookies from "js-cookie";
 const baseApi = createApi({
   reducerPath: "employeeApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: `http://localhost:5000`,
+    baseUrl: `https://attendance-task-server.vercel.app`,
     prepareHeaders: (headers, { getState }) => {
       const token = Cookies.get("employee-access-token");
       if (token) {
@@ -13,7 +13,7 @@ const baseApi = createApi({
       return headers;
     },
   }),
-  tagTypes: ["Users","Attendance","Employee"],
+  tagTypes: ["Users", "Attendance", "Employee", "admin"],
   endpoints: (builder) => ({}),
 });
 

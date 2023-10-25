@@ -43,10 +43,9 @@ const PrivateRoute = ({ children }) => {
   }, [auth, dispatch, sendLoggedUser]);
 
   if (isLoading) {
-    //console.log("object");
     return <div>Loading..........</div>;
   }
-  console.log(user);
+
   if (user) {
     return <>{children}</>;
   }

@@ -29,9 +29,7 @@ const EmployeeAttendanceData = () => {
     setViewDetails({});
     setOpen(true);
     console.log(getEmployeeData);
-    const employeeDetails = {
-      details,
-    };
+ 
     getEmployeeDetails({ id: details?._id, email: details?.email }).then(
       (res) => {
         console.log(res);

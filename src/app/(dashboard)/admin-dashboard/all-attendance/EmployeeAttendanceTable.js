@@ -8,8 +8,10 @@ import { CSVLink } from "react-csv";
 import { FaEye } from "react-icons/fa";
 import { RiFileExcel2Fill } from "react-icons/ri";
 import { useSelector } from "react-redux";
-
+import { usePathname } from "next/navigation";
 const EmployeeAttendanceTable = ({ handleViewEmployeeAttendance }) => {
+  const pathname = usePathname();
+
   const { attendanceEmail, endDate, startDate } = useSelector(
     (state) => state?.attendanceSlice
   );
@@ -33,72 +35,78 @@ const EmployeeAttendanceTable = ({ handleViewEmployeeAttendance }) => {
 
     return formattedTime;
   };
-  const columns = useMemo(() => [
-    {
-      header: "#",
-      size: 30,
-      accessorFn: (row, i) => i + 1,
-    },
-    {
-      header: "Date",
-      size: 50,
-      accessorFn: (row) => moment(row.date).format("D-M-YYYY"),
-    },
-    {
-      header: "Email",
-      accessorFn: (row) => row?.email,
-      size: 100,
-    },
-    {
-      header: "Day",
-      accessorKey: "day",
-      size: 80,
-    },
-    {
-      header: "Start Time",
-      accessorKey: "startTime",
-      size: 100,
-    },
-    {
-      header: "End Time",
-      accessorKey: "endTime",
-      size: 100,
-    },
-    {
-      header: "Total Work",
-      size: 100,
-      accessorFn: (row) => <TotalWorkColumn row={row} />,
-    },
+  const columns = useMemo(() => {
+    const commonColumns = [
+      {
+        header: "#",
+        size: 30,
+        accessorFn: (row, i) => i + 1,
+      },
+      {
+        header: "Date",
+        size: 50,
+        accessorFn: (row) => moment(row.date).format("D-M-YYYY"),
+      },
+      {
+        header: "Email",
+        accessorFn: (row) => row?.email,
+        size: 100,
+      },
+      {
+        header: "Day",
+        accessorKey: "day",
+        size: 80,
+      },
+      {
+        header: "Start Time",
+        accessorKey: "startTime",
+        size: 100,
+      },
+      {
+        header: "End Time",
+        accessorKey: "endTime",
+        size: 100,
+      },
+      {
+        header: "Total Work",
+        size: 100,
+        accessorFn: (row) => <TotalWorkColumn row={row} />,
+      },
+      {
+        header: "Start Ip",
+        size: 100,
+        accessorFn: (row) => row?.trackingDetails?.providerDetails?.query,
+      },
+      {
+        header: "Start location",
+        accessorFn: (row) => (
+          <div className="w-full">
+            {row?.trackingDetails?.addressDetails?.city},
+            {row?.trackingDetails?.addressDetails?.county},
+            {row?.trackingDetails?.addressDetails?.postcode}
+          </div>
+        ),
+      },
+    ];
 
-    {
-      header: "Start Ip",
-      size: 100,
+    if (pathname === "/admin-dashboard/all-attendance") {
+      commonColumns.push({
+        header: "Details",
+        accessorFn: (row) => (
+          <button
+            onClick={() => handleViewEmployeeAttendance(row)}
+            className="text-lg px-3 py-3 bg-[#0D64A5] text-white rounded-lg"
+          >
+            <FaEye></FaEye>
+          </button>
+        ),
+      });
+    }
 
-      accessorFn: (row) => row?.trackingDetails?.providerDetails?.query,
-    },
-    {
-      header: "Start location",
-      accessorFn: (row) => (
-        <div className="w-full">
-          {row?.trackingDetails?.addressDetails?.city},
-          {row?.trackingDetails?.addressDetails?.county},
-          {row?.trackingDetails?.addressDetails?.postcode}
-        </div>
-      ),
-    },
-    {
-      header: "Details",
-      accessorFn: (row) => (
-        <button
-          onClick={() => handleViewEmployeeAttendance(row)}
-          className="text-lg px-3 py-3 bg-[#0D64A5] text-white rounded-lg"
-        >
-          <FaEye></FaEye>
-        </button>
-      ),
-    },
-  ]);
+    return commonColumns;
+  }, [pathname]);
 
+  console.log("pathname", pathname);
   const exportData = allData?.map((row, i) => {
     const workTime = TotalWorkColumn({ row });
     const employeeData = {
