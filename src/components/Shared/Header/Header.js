@@ -10,7 +10,7 @@ import { getAuth, signOut } from "firebase/auth";
 import { setLogOut } from "@/Redux/Features/userSlice/userSlice";
 import { useRouter } from "next/navigation";
 import app from "@/Utils/firebase.init";
-const auth = getAuth(app)
+const auth = getAuth(app);
 const Header = () => {
   const { user } = useSelector((state) => state.userSlice);
   const dispatch = useDispatch();
@@ -47,13 +47,17 @@ const Header = () => {
             </Link>
           </li>
           <li>
-            <Image
-              className="w-12 h-12 rounded-full ring-4"
-              src={user?.photoURL}
-              alt="userImage"
-              width={48}
-              height={48}
-            ></Image>
+            {user?.photoURL ? (
+              <Image
+                className="w-12 h-12 rounded-full ring-4"
+                src={user?.photoURL}
+                alt="userImage"
+                width={48}
+                height={48}
+              ></Image>
+            ) : (
+              user?.email
+            )}
           </li>
           <li>
             <button
