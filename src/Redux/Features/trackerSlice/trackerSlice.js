@@ -46,8 +46,9 @@ export const fetchTracker = createAsyncThunk(
   "tracker/fetchTracker",
   async () => {
     try {
-      const response = await axios.get("https://api.my-ip.io/ip.json");
-      if (response.data.success) {
+      const response = await axios.get("https://api.ipify.org/?format=json");
+      console.log(response,'fdfdsf');
+      if (response.data) {
         const getLocationData = await axios.get(
           `http://ip-api.com/json/${response?.data?.ip}`
         );
