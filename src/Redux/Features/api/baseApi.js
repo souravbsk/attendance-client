@@ -5,7 +5,7 @@ const baseApi = createApi({
   reducerPath: "employeeApi",
   baseQuery: fetchBaseQuery({
     // baseUrl: `https://attendance-task-server.vercel.app`,
-    baseUrl: `http://localhost:5000`,
+    baseUrl: `${process.env.NEXT_PUBLIC_BASEURL}`,
     prepareHeaders: (headers, { getState }) => {
       const token = Cookies.get("employee-access-token");
       if (token) {

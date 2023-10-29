@@ -50,7 +50,7 @@ export const fetchTracker = createAsyncThunk(
       console.log(response, "fdfdsf");
       if (response.data) {
         const getLocationData = await axios.get(
-          `//ip-api.com/json/${response?.data?.ip}`
+          `${process.env.NEXT_PUBLIC_BASEURL}/api/ip-api/${response?.data?.ip}`
         );
         console.log(getLocationData, "get location");
         if (getLocationData.data.status == "success") {
