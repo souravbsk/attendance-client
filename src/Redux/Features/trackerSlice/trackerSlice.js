@@ -47,12 +47,12 @@ export const fetchTracker = createAsyncThunk(
   async () => {
     try {
       const response = await axios.get("https://api.ipify.org/?format=json");
-      console.log(response,'fdfdsf');
+      console.log(response, "fdfdsf");
       if (response.data) {
         const getLocationData = await axios.get(
-          `http://ip-api.com/json/${response?.data?.ip}`
+          `//ip-api.com/json/${response?.data?.ip}`
         );
-        //console.log(getLocationData);
+        console.log(getLocationData, "get location");
         if (getLocationData.data.status == "success") {
           const { lat, lon } = await getLocationData.data;
           const getlocationDetails = await axios.get(
