@@ -10,9 +10,11 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
+import { useRouter } from "next/navigation";
 
 const SignUp = () => {
   const dispatch = useDispatch();
+  const router = useRouter();
 
   const [checkUserExist] = useCheckUserExistMutation();
   const [setSignUp, { isLoading, data, isError, error }] =
@@ -52,10 +54,10 @@ const SignUp = () => {
         });
       }
       if (res?.data?.isUserExist) {
-        dispatch(createUser({ email, password, image, fullName }))
-          .then((response) => {
+        dispatch(createUser({ email, password, image, fullName })).then(
+          (response) => {
             console.log(response);
-            if(response.error){
+            if (response.error) {
               toast.error(`${response?.error?.message}`, {
                 position: "top-center",
                 autoClose: 1500,
@@ -65,7 +67,7 @@ const SignUp = () => {
                 draggable: true,
                 progress: undefined,
                 theme: "light",
-                });
+              });
             }
             if (response.payload) {
               const newUser = {
@@ -84,6 +86,7 @@ const SignUp = () => {
                 }
 
                 if (res.data.modifiedCount > 0) {
+                  router.push("/");
                   Swal.fire({
                     position: "center",
                     icon: "success",
@@ -94,8 +97,8 @@ const SignUp = () => {
                 }
               });
             }
-          })
-        
+          }
+        );
       }
     });
   };

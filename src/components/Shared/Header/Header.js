@@ -10,11 +10,14 @@ import { getAuth, signOut } from "firebase/auth";
 import { setLogOut } from "@/Redux/Features/userSlice/userSlice";
 import { useRouter } from "next/navigation";
 import app from "@/Utils/firebase.init";
+import { useGetIsAdminQuery } from "@/Redux/Features/api/AdminApi/IsAdminApi";
+import { AiFillDashboard } from "react-icons/ai";
 const auth = getAuth(app);
 const Header = () => {
   const { user } = useSelector((state) => state.userSlice);
   const dispatch = useDispatch();
   const router = useRouter();
+  const { data, isLoading } = useGetIsAdminQuery(user && user?.email);
 
   const handleLogout = () => {
     signOut(auth)
@@ -29,15 +32,17 @@ const Header = () => {
       });
   };
 
+  console.log(data, "is admin");
+
   return (
     <header className="bg-[#0D64A5]">
       <div className="flex  items-center container justify-between gap-3 py-4 ">
         <div className="flex-1">
-          <Link href="/" className="text-white font-semibold text-3xl">
+          <Link href="/" className="text-white font-semibold md:text-3xl">
             B & V
           </Link>
         </div>
-        <ul className="flex items-center gap-6">
+        <ul className="flex items-center gap-3 md:gap-6">
           <li>
             <Link
               className="text-2xl text-white font-semibold "
@@ -46,6 +51,15 @@ const Header = () => {
               <FaHistory></FaHistory>
             </Link>
           </li>
+          {data && data?.admin ? (
+            <li className="text-white">
+              <Link href="http://localhost:3000/admin-dashboard/dashboard">
+                <AiFillDashboard size={26}></AiFillDashboard>
+              </Link>
+            </li>
+          ) : (
+            ""
+          )}
           <li>
             {user?.photoURL ? (
               <Image
