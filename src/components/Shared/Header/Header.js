@@ -53,7 +53,7 @@ const Header = () => {
           </li>
           {data && data?.admin ? (
             <li className="text-white">
-              <Link href="http://localhost:3000/admin-dashboard/dashboard">
+              <Link href="https://attendance-tracker-client.vercel.app/admin-dashboard/dashboard">
                 <AiFillDashboard size={26}></AiFillDashboard>
               </Link>
             </li>
