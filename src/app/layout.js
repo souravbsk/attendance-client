@@ -5,6 +5,7 @@ export default function RootLayout({ children }) {
     <html data-theme="light" lang="en">
       <body>
         <ClientProvider>
+    // hello
           <main>{children}</main>
         </ClientProvider>
       </body>
